@@ -62,8 +62,8 @@ class TarjetsController extends Controller
             return response()->json(['message' => 'Tarjeta no encontrada'], 404);
         }
         $validator = Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'image' => 'url',
+            'name' => 'sometimes|string|max:255',
+            'image' => 'sometimes|url',
         ]);
         if($validator->fails()) {
             return response()->json($validator->errors(), 422);
