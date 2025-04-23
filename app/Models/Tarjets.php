@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Usuario extends Model
+class Tarjets extends Model
 {
     use HasFactory;
-
-    protected $table = 'usuarios';
+    protected $table = 'tarjets';
     protected $fillable = [
-        'name', 'subname', 'nickname', 'email', 'phone', 'address'
+        'name', 'image'
     ];
-    
+
+
 }
