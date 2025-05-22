@@ -27,11 +27,19 @@ Route::middleware([IsAunthenticated::class])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'getUser']);
     Route::post('pets', [petsController::class, 'store']);
+    Route::get('/my-pets', [CardController::class, 'mypets']);
+    Route::get('/my-pets/{id}', [CardController::class, 'getmypet']);
+    Route::put('/my-pets/{id}', [CardController::class, 'updatemypet']);
+    Route::patch('/my-pets/{id}', [CardController::class, 'updatePartialmypet']);
+
+    Route::delete('/my-pets/{id}', [CardController::class, 'destroy']);
+
+
 });
 //ADMIN ROUTES
 Route::middleware([Isadmin::class])->group(function () {
 
-    Route::get('users', [AuthController::class, 'getAdmin']);
+    Route::get('users', [AuthController::class, 'indexUser']);
     Route::get('users/{id}', [AuthController::class, 'getUserById']);
     Route::put('users/{id}', [AuthController::class, 'updateUser']);
     Route::delete('users/{id}', [AuthController::class, 'deleteUser']);

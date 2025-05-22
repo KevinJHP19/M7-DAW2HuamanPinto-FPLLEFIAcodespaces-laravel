@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pets', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('image');
-            $table->string('description');
-             $table->timestamps();
+        Schema::table('pets', function (Blueprint $table) {
+            $table->foreingId('user_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pets');
+        Schema::table('pets', function (Blueprint $table) {
+            //
+        });
     }
 };
