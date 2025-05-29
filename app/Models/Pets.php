@@ -13,6 +13,7 @@ class pets extends Model
         'name',
         'image',
         'description',
+        'user_id'
     ];
     public function user()
     {

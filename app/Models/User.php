@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Contracts\JWTSubject as JWTSubjectContract;
 
 
 class User extends Authenticatable implements JWTSubject
@@ -68,6 +69,6 @@ class User extends Authenticatable implements JWTSubject
     }
     public function pets()
     {
-        return this->hasMany(Card::class);
+        return this->hasMany(pets::class);
     }
 }
