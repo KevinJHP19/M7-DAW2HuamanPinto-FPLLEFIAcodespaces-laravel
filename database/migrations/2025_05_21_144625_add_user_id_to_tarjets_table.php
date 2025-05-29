@@ -11,23 +11,26 @@ return new class extends Migration
      */
 
     public function up(): void
-    {
+{
+    if (!Schema::hasColumn('tarjets', 'user_id')) {
         Schema::table('tarjets', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
         });
-        if (!Schema::hasColumn('tarjets', 'user_id')) {
-    $table->unsignedBigInteger('user_id')->nullable();
+    }
 }
 
-    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
-    {
+{
+    if (Schema::hasColumn('tarjets', 'user_id')) {
         Schema::table('tarjets', function (Blueprint $table) {
-            //
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
+}
+
 };
