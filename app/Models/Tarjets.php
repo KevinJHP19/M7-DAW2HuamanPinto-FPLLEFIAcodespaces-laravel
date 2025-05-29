@@ -11,7 +11,20 @@ class Tarjets extends Model
     protected $table = 'tarjets';
     protected $fillable = [
         'name', 'image'
+
+
+
     ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 
 
 }

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Tarjets;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\User;
 class TarjetsController extends Controller
 {
     //
@@ -20,13 +23,22 @@ class TarjetsController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'image' => 'required|url',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $tarjet = Tarjets::create($request->all());
-        return response()->json(['tarjet' => $tarjet], 201);
+        $tarjet = Tarjets::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'category_id' => $request->category_id,
+            'user_id' => Auth::id(), // AÑADIMOS AL USUARIO QUE LO HA CREADO
+        ]);
+        return response()->json([
+            'message' => 'Tarjeta creada',
+            'tarjet' => $tarjet,
+        ], 201);
 
     }
     public function show($id)
@@ -73,14 +85,36 @@ class TarjetsController extends Controller
     }
     public function destroy($id)
     {
+
         $tarjet = Tarjets::find($id);
+
         if (!$tarjet) {
             return response()->json(['message' => 'Tarjeta no encontrada'], 404);
+        }
+        
+        $user = Auth::user();
+        if ($tarjet->user_id !== $user->id && $user->role !== 'admin') {
+            return response()->json(['message' => 'No autorizado'], 404);
         }
         $tarjet->delete();
         return response()->json(['message' => 'Tarjeta eliminada'], 200);
 
 
+    }
+    public function getByCategory($categoryId)
+    {
+        $tarjets = Tarjets::where('category_id', $categoryId)->get();
+
+        return response()->json($tarjets);
+    }
+    public function myCards()
+    {
+        $tarjets = Tarjets::where('user_id', Auth::id())->get();
+
+        return response()->json([
+            'message' => 'Tus tarjetas',
+            'data' => $tarjets
+        ]);
     }
 
 }
